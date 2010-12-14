@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>
+		Custom URL Shortener Options
+	</title>
+	<style>
+		body {
+			color: #999;
+		}
+		#content {
+			width: 300px;
+			margin: 0 auto;
+			padding: 30px;
+		}
+	</style>
+	<script>
+		function saveOptions(){
+			var service = document.getElementById('service').value;
+			var status = document.getElementById('status');
+			
+			if (service != ""){
+				localStorage['url_service'] = service;
+				
+				// let them know it's ok
+				status.innerHTML = "Options Saved";
+				showService();
+			}
+			else {
+				status.innerHTML = "Error - Incorrect Service";
+			}
+			
+			// make the ok go away
+			setTimeout(function() {
+				status.innerHTML = "";
+			  }, 2000);
+		}
+		
+		function showService(){
+			document.getElementById("old-service").innerHTML = localStorage['url_service'];
+		}
+	</script>
+</head>
+<body onload="showService()">
+	<div id='content'>
+		Service: http://<span id='old-service'></span>
+		<br><br>
+		New Service: <br>http://<input type='text' size=30 id='service'/>
+		<br><br>
+		<button value='Save Options' onclick='saveOptions()'>Save Options</button>
+		<br><br>
+		<div id='status'>
+		
+		</div>
+	</div>
+</body>

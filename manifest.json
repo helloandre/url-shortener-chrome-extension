@@ -1,0 +1,20 @@
+{
+	"name": "Custom URL Shortener",
+	"version": "0.3",
+	"description": "Shortens URLs with a custom service",
+	"update_url": "http://ablu.us/custom_update.xml",
+	"background_page": "background.html",
+	"options_page": "options.html",
+	"icons": {
+		"48": "icons/48icon.png",
+		"128": "icons/128icon.png"
+	},
+	"page_action": {
+		"default_icon": "icons/icon.png",
+		"popup": "popup.html"
+	},
+	"permissions": [
+		"tabs",
+		"http://*/*"
+	]
+}

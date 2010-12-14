@@ -1,0 +1,10 @@
+<script>
+// listen, chrome. listen.
+chrome.tabs.onUpdated.addListener(showShortener);
+
+function showShortener(tabId, changeInfo, tab){
+	if (tab.url.indexOf('http') > -1){
+		chrome.pageAction.show(tabId);
+	}
+}
+</script>

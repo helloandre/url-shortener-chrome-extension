@@ -1,0 +1,87 @@
+<style>
+body{
+	min-width: 100px;
+	overflow-x: hidden;
+	color: #999;
+}
+input {
+	border: 1px solid #ccc;
+	color: #484848
+}
+a {
+	font-size: 1.2em;
+	color: #5D5D5D;
+	padding: 3px;
+}
+</style>
+
+<script>
+// get url to be shortened
+// .getSelected is apparently asynchronous
+chrome.tabs.getSelected(null, function(tab){
+	if (localStorage['url_service'] == undefined){
+		failFunction();
+	}
+	else{
+		var status = document.createElement("span");
+		var req = new XMLHttpRequest();
+
+		status.innerHTML = "Generating...";
+		status.setAttribute("id", "status");
+
+		document.body.appendChild(status);
+
+
+		// request to url server
+		req.open(
+			"GET",
+			"http://"+localStorage['url_service']+escape(tab.url),
+			true
+		);
+
+		// do things when the request gets returned
+		req.onload = function() {
+			var url = req.responseText;
+			var status = document.getElementById("status");
+			if (url == ""){
+				status.innerHTML = "Service Error<br>";
+				failFunction();
+			}
+			else if (url.substr(0, 4) != "http"){
+				status.innerHTML = url;
+			}
+			else {
+				// create input stuff
+				var input = document.createElement("input");
+				input.setAttribute("value", url)
+
+				// add to body
+				document.body.appendChild(input);
+
+				// copy to clipboard
+				input.focus();
+				input.select();
+				document.execCommand('Copy');
+
+				var status = document.getElementById("status");
+				status.innerHTML = "Copied To Clipboard<br>";
+			}
+		}
+
+		// woo! do shit!
+		req.send(null);
+	}
+
+	function failFunction(){
+		var fail = document.createElement("a");
+		fail.innerHTML = "Set Shortener";
+		fail.href = "#";
+		fail.onclick = function(){
+			chrome.tabs.create({"url": chrome.extension.getURL('options.html')});
+		}
+		document.body.appendChild(fail);
+	}
+});
+
+
+</script>
